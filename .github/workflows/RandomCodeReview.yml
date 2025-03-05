@@ -20,8 +20,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // 멤버 목록 (PR 작성자를 제외할 예정)
-            const members = ['Hyewon Yoon', 'yerimming', 'hash_kim', 'jay-so', 'Ji Min Seong'];
+            // 멤버 목록 (PR 작성자를 제외)
+            const members = ['iey704', 'yerimming', 'makeUgreat', 'jay-so', 'jiminseong'];
 
             // PR 작성자 제외
             const filteredMembers = members.filter(member => 

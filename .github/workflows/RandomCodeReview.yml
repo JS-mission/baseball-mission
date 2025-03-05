@@ -20,7 +20,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            // 멤버 목록 (PR 작성자를 제외)
+            // 멤버 목록
             const members = ['iey704', 'yerimming', 'makeUgreat', 'jay-so', 'jiminseong'];
 
             // PR 작성자 제외

@@ -5,7 +5,7 @@ export class RandomNumber {
     #answer;
 
     constructor() {
-        this.#answer = MissionUtils.Random.pickNumberInRange(1,999);
+        this.#answer = MissionUtils.Random.pickNumberInRange(100,999);
     }
 
     get printAnswer() {

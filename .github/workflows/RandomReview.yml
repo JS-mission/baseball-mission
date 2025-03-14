@@ -1,0 +1,39 @@
+name: Random Reviewers 등록
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  set-random-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Assign Random Reviewers
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const members = ['jiminseong', 'makeUgreat', 'yerimming', 'jay-so', 'iey704'];
+
+            const filteredMembers = members.filter(member => 
+              member !== github.context.payload.pull_request.user.login);
+
+            const randomReviewers = filteredMembers.sort(() => Math.random() - 0.5).slice(0, 3);
+
+            await github.rest.issues.createComment({
+              issue_number: github.context.payload.pull_request.number,
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              body: `@${randomReviewers.join(' @')} 리뷰 부탁드립니다. 🙏`
+            });
+            
+            await github.rest.pulls.requestReviewers({
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              pull_number: github.context.payload.pull_request.number,
+              reviewers: randomReviewers
+            });

@@ -14,39 +14,36 @@ on:
       - jiminseong
 
 jobs:
-  set-random-reviewer:
+  random-reviwer:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Assign Random Reviewers
-        uses: actions/github-script@v5
+      - id: random_reviwer
+        uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            if (!github.context.payload || !github.context.payload.pull_request) {
-              console.log('GitHub context or pull request data is not available.');
-              throw new Error('Pull request context is not available.');
-            }
+            const me = '${{ github.event.pull_request.user.login }}';
+            const candidate = ['username1', 'username2', 'username3', 'username4'];
+            const candidateWithoutMe = candidate.filter(id => id !== me);
+            const randomReviewer = candidateWithoutMe[Math.floor(Math.random() * candidateWithoutMe.length)];
 
-            const members = ['jiminseong', 'makeUgreat', 'yerimming', 'jay-so', 'iey704'];
-            const filteredMembers = members.filter(member => 
-              member !== github.context.payload.pull_request.user?.login 
-            );
+            const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`
+            core.setOutput('comment', comment)
+            core.setOutput('reviewer', randomReviewer)
 
-            const randomReviewers = filteredMembers.sort(() => Math.random() - 0.5).slice(0, 3);
+      - name: comment PR
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ${{ steps.random_reviwer.outputs.comment }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]'
 
-            await github.rest.issues.createComment({
-              issue_number: github.context.payload.pull_request.number,
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              body: `@${randomReviewers.join(' @')} 리뷰 부탁드립니다.`
-            });
-
-            await github.rest.pulls.requestReviewers({
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
+      - name: Add Pull Request Reviewer
+        uses: madrapps/add-reviewers@v1
+        with:
+          reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
+          token: ${{ secrets.GITHUB_TOKEN }}
               pull_number: github.context.payload.pull_request.number,
               reviewers: randomReviewers
             });

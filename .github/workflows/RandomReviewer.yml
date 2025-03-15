@@ -44,7 +44,7 @@ jobs:
               issue_number: github.context.payload.pull_request.number,
               owner: github.context.repo.owner,
               repo: github.context.repo.repo,
-              body: `@${randomReviewers.join(' @')} 리뷰 부탁드립니다. 🙏`
+              body: `@${randomReviewers.join(' @')} 리뷰 부탁드립니다.`
             });
 
             await github.rest.pulls.requestReviewers({

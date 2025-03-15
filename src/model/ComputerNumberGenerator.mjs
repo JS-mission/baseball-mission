@@ -12,7 +12,6 @@ class ComputerNumberGenerator {
    * 컴퓨터는 중복되지 않는 랜덤 세자리의 숫자를 생성한다.
    * @returns {number} 중복되지 않는 세자리의 숫자
    */
-
   generateNumber() {
     const digitalArray = new Set();
 
@@ -32,7 +31,7 @@ class ComputerNumberGenerator {
   }
 
   initComputerNumber() {
-    this.#computerNumber = this.getComputerNumber;
+    this.#computerNumber = this.generateNumber();
   }
 }
 

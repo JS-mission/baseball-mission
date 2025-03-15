@@ -28,8 +28,7 @@ jobs:
       - name: comment PR
         uses: mshick/add-pr-comment@v1
         with:
-          message: |
-            ${{ steps.random_reviwer.outputs.comment }}
+          message: ${{ steps.random_reviwer.outputs.comment }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]'
 
@@ -38,4 +37,3 @@ jobs:
         with:
           reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
-

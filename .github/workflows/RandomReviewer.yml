@@ -20,9 +20,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Debug GitHub Context
-        run: echo "${{ toJson(github) }}"
-
       - name: Assign Random Reviewers
         uses: actions/github-script@v5
         with:

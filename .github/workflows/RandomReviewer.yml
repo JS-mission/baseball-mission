@@ -18,7 +18,7 @@ jobs:
       - id: random_reviwer
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
             const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
@@ -28,8 +28,7 @@ jobs:
       - name: comment PR
         uses: mshick/add-pr-comment@v1
         with:
-          message: |
-            ${{ steps.random_reviwer.outputs.comment }}
+          message: ${{ steps.random_reviwer.outputs.comment }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]'
 
@@ -38,4 +37,3 @@ jobs:
         with:
           reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
-

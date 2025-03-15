@@ -18,17 +18,10 @@ jobs:
       - id: random_reviwer
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }} 
           script: |
-            const candidates = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
-            const { github } = require('@actions/github');
-            const context = github.context;
-
-            const author = context.payload.pull_request.user.login;
-
-            const filteredCandidates = candidates.filter(candidate => candidate !== author);
-
-            const randomReviewer = filteredCandidates[Math.floor(Math.random() * filteredCandidates.length)];
+            const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
+            const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
             const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
             console.log(`Comment: ${comment}`);
             return { comment, reviewer: randomReviewer };
@@ -56,3 +49,4 @@ jobs:
         with:
           reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
+

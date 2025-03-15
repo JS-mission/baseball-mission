@@ -23,17 +23,30 @@ jobs:
             const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
             const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
             const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
+            console.log(`Comment: ${comment}`);
             return { comment, reviewer: randomReviewer };
 
       - name: comment PR
-        uses: mshick/add-pr-comment@v1
+        uses: actions/github-script@v5
         with:
-          message: ${{ steps.random_reviwer.outputs.comment }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          repo-token-user-login: 'github-actions[bot]'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reviewer = '${{ steps.random_reviwer.outputs.reviewer }}';
+            const comment = `@${reviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
+            
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number,
+              body: comment
+            });
 
       - name: Add Pull Request Reviewer
         uses: madrapps/add-reviewers@v1
         with:
           reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
+

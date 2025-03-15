@@ -8,50 +8,45 @@ on:
       - jay-so
       - iey704
       - yerimming
+      - makeUgreat
       - jiminseong
 
 jobs:
-  random-reviewer:
+  random-reviwer:
     runs-on: ubuntu-latest
     steps:
-      - id: random_reviewer
+      - id: random_reviwer
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }} 
           script: |
-            const candidates = ['jay-so', 'iey704', 'yerimming', 'jiminseong'];
-            const author = context.payload.pull_request.user.login;
-
-            // 작성자를 제외한 후보자 목록 만들기
-            const filteredCandidates = candidates.filter(candidate => candidate !== author);
-
-            // 랜덤 리뷰어 선택 (3명)
-            const randomReviewers = filteredCandidates.sort(() => Math.random() - 0.5).slice(0, 3);
-
-            // 메시지 생성
-            const comment = `@${randomReviewers.join(' @')} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
+            const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
+            const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
+            const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
             console.log(`Comment: ${comment}`);
+            return { comment, reviewer: randomReviewer };
 
-            core.setOutput('comment', comment);
-            core.setOutput('reviewers', randomReviewers.join(','));
-
-      - name: Comment PR
+      - name: comment PR
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const reviewers = '${{ steps.random_reviewer.outputs.reviewers }}'.split(',');
-            const comment = `@${reviewers.join(' @')} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
-
+            const reviewer = '${{ steps.random_reviwer.outputs.reviewer }}';
+            const comment = `@${reviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
+            
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            
             await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: comment,
+              owner,
+              repo,
+              issue_number,
+              body: comment
             });
 
-      - name: Add Pull Request Reviewers
+      - name: Add Pull Request Reviewer
         uses: madrapps/add-reviewers@v1
         with:
-          reviewers: ${{ steps.random_reviewer.outputs.reviewers }}
+          reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
+

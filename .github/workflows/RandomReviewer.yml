@@ -21,7 +21,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const me = '${{ github.event.pull_request.user.login }}';
-            const candidate = ['username1', 'username2', 'username3', 'username4'];
+            const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
             const candidateWithoutMe = candidate.filter(id => id !== me);
             const randomReviewer = candidateWithoutMe[Math.floor(Math.random() * candidateWithoutMe.length)];
 

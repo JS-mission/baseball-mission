@@ -16,18 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: random_reviwer
-        uses: actions/github-script@v3
+        uses: actions/github-script@v5  
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const me = '${{ github.event.pull_request.user.login }}';
+            const core = require('@actions/core'); 
             const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
-            const candidateWithoutMe = candidate.filter(id => id !== me);
-            const randomReviewer = candidateWithoutMe[Math.floor(Math.random() * candidateWithoutMe.length)];
-
-            const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`
-            core.setOutput('comment', comment)
-            core.setOutput('reviewer', randomReviewer)
+            const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
+            const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
+            core.setOutput('comment', comment);
+            core.setOutput('reviewer', randomReviewer);
 
       - name: comment PR
         uses: mshick/add-pr-comment@v1
@@ -42,6 +40,3 @@ jobs:
         with:
           reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
           token: ${{ secrets.GITHUB_TOKEN }}
-              pull_number: github.context.payload.pull_request.number,
-              reviewers: randomReviewers
-            });

@@ -20,8 +20,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const candidate = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
-            const randomReviewer = candidate[Math.floor(Math.random() * candidate.length)];
+            const candidates = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
+            const { github, context } = require('@actions/github'); // context를 포함하여 가져오기
+
+            const author = context.payload.pull_request.user.login;
+
+            // 작성자를 제외한 후보자 목록 만들기
+            const filteredCandidates = candidates.filter(candidate => candidate !== author);
+
+            // 랜덤 리뷰어 선택
+            const randomReviewer = filteredCandidates[Math.floor(Math.random() * filteredCandidates.length)];
             const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
             console.log(`Comment: ${comment}`);
             return { comment, reviewer: randomReviewer };
@@ -31,6 +39,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const { github, context } = require('@actions/github'); // context 포함
             const reviewer = '${{ steps.random_reviwer.outputs.reviewer }}';
             const comment = `@${reviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
             

@@ -4,6 +4,8 @@ on:
   pull_request:
     types:
       - opened
+      - ready_for_review
+      - synchronize
 
 jobs:
   set-random-reviewer:
@@ -12,15 +14,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Debug GitHub Context
+        run: echo "${{ toJson(github.context) }}"
+
       - name: Assign Random Reviewers
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const members = ['jiminseong', 'makeUgreat', 'yerimming', 'jay-so', 'iey704'];
+            if (!github.context.payload || !github.context.payload.pull_request) {
+              throw new Error('Pull request context is not available.');
+            }
 
+            const members = ['jiminseong', 'makeUgreat', 'yerimming', 'jay-so', 'iey704'];
             const filteredMembers = members.filter(member => 
-              member !== github.context.payload.pull_request.user.login);
+              member !== github.context.payload.pull_request.user?.login // Optional chaining 사용
+            );
 
             const randomReviewers = filteredMembers.sort(() => Math.random() - 0.5).slice(0, 3);
 
@@ -30,7 +39,7 @@ jobs:
               repo: github.context.repo.repo,
               body: `@${randomReviewers.join(' @')} 리뷰 부탁드립니다. 🙏`
             });
-            
+
             await github.rest.pulls.requestReviewers({
               owner: github.context.repo.owner,
               repo: github.context.repo.repo,

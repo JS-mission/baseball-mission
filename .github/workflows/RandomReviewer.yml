@@ -14,29 +14,7 @@ jobs:
   random-reviewer:
     runs-on: ubuntu-latest
     steps:
-<<<<<<< HEAD
       - id: random_reviewer
-=======
-      - id: random_reviwer
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const candidates = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
-            const { github } = require('@actions/github');
-            const context = github.context;
-
-            const author = context.payload.pull_request.user.login;
-
-            const filteredCandidates = candidates.filter(candidate => candidate !== author);
-
-            const randomReviewer = filteredCandidates[Math.floor(Math.random() * filteredCandidates.length)];
-            const comment = `@${randomReviewer} 님 랜덤 리뷰어로 당첨되셨습니다! 리뷰를 부탁드립니다. 🙏`;
-            console.log(`Comment: ${comment}`);
-            return { comment, reviewer: randomReviewer };
-
-      - name: comment PR
->>>>>>> fe1ca3f (chore: 다중 랜덤 리뷰어 설정 추가)
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -75,10 +53,5 @@ jobs:
       - name: Add Pull Request Reviewers
         uses: madrapps/add-reviewers@v1
         with:
-<<<<<<< HEAD
           reviewers: ${{ steps.random_reviewer.outputs.reviewers }}
           token: ${{ secrets.GITHUB_TOKEN }}
-=======
-          reviewers: ${{ steps.random_reviwer.outputs.reviewer }}
-          token: ${{ secrets.GITHUB_TOKEN }}
->>>>>>> fe1ca3f (chore: 다중 랜덤 리뷰어 설정 추가)

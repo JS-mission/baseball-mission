@@ -8,7 +8,6 @@ on:
       - jay-so
       - iey704
       - yerimming
-      - makeUgreat
       - jiminseong
 
 jobs:
@@ -20,7 +19,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const candidates = ['jay-so', 'iey704', 'yerimming', 'makeUgreat', 'jiminseong'];
+            const candidates = ['jay-so', 'iey704', 'yerimming', 'jiminseong'];
             const author = context.payload.pull_request.user.login;
 
             // 작성자를 제외한 후보자 목록 만들기

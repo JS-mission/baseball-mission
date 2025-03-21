@@ -6,7 +6,12 @@ const InputView = {
 
     return parseInt(userNumber, 10);
   },
+
+  async getUserCommand(message) {
+    const userCommand = await Console.readLineAsync(message);
+
+    return parseInt(userCommand, 10);
+  },
 };
 
 export default InputView;
-

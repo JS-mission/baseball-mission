@@ -8,6 +8,7 @@ export default {
     '**/PrintProgressTest.js',
     '**/ValidatorTest.js',
     '**/NumberGeneratorTest.js',
+    '**/GameAnalyzerTest.js',
   ],
   testPathIgnorePatterns: ['/node_modules/'],
 };

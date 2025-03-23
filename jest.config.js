@@ -7,6 +7,7 @@ export default {
     '**/?(*.)+(spec|test).js?(x)',
     '**/PrintProgressTest.js',
     '**/ValidatorTest.js',
+    '**/NumberGeneratorTest.js',
   ],
   testPathIgnorePatterns: ['/node_modules/'],
 };

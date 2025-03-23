@@ -4,13 +4,19 @@ import ComputerNumberGenerator from './model/ComputerNumberGenerator.mjs';
 class App {
   #gameController;
 
-  constructor() {
-    this.#gameController = new GameController(new ComputerNumberGenerator());
+  constructor(gameController) {
+    this.#gameController = gameController;
   }
 
   async play() {
     await this.#gameController.startGame();
   }
 }
+
+const computerNumberGenerator = new ComputerNumberGenerator();
+const gameController = new GameController(computerNumberGenerator);
+const app = new App(gameController);
+
+app.play();
 
 export default App;

@@ -1,18 +1,18 @@
 import { Random } from '@woowacourse/mission-utils';
-import GAME_CONDITION from '../constant/conditions.mjs';
+import { GAME_CONDITION } from '../constant/conditions.mjs';
 
 class ComputerNumberGenerator {
   #computerNumber;
 
   constructor() {
-    this.#computerNumber = this.generateNumber();
+    this.#computerNumber = this.generateRandomNumbers();
   }
 
   /**
    * 컴퓨터는 중복되지 않는 랜덤 세자리의 숫자를 생성한다.
    * @returns {number} 중복되지 않는 세자리의 숫자
    */
-  generateNumber() {
+  generateRandomNumbers() {
     const digitalArray = new Set();
 
     while (digitalArray.size < GAME_CONDITION.maxLength) {
@@ -31,7 +31,7 @@ class ComputerNumberGenerator {
   }
 
   initComputerNumber() {
-    this.#computerNumber = this.generateNumber();
+    this.#computerNumber = this.generateRandomNumbers();
   }
 }
 

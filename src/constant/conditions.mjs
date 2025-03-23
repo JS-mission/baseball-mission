@@ -5,4 +5,9 @@ const GAME_CONDITION = Object.freeze({
   endNumber: 9,
 });
 
-export default GAME_CONDITION;
+const USER_COMMAND = Object.freeze({
+  replay: 1,
+  end: 2,
+});
+
+export { USER_COMMAND, GAME_CONDITION };

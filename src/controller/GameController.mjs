@@ -2,6 +2,7 @@ import OutPutView from '../view/OutputView.mjs';
 import { MESSAGES } from '../constant/messages.mjs';
 import InputView from '../view/InputView.mjs';
 import GameAnalyzer from '../model/GameAnalyzer.mjs';
+import { USER_COMMAND } from '../constant/conditions.mjs';
 
 class GameController {
   #computer;
@@ -29,6 +30,14 @@ class GameController {
 
   async finishGame() {
     OutPutView.printStaticMessage(MESSAGES.endGuide);
+
+    const userCommand = await InputView.getUserCommand(MESSAGES.replayGuide);
+
+    if (userCommand === USER_COMMAND.replay) {
+      this.#computer.initComputerNumber();
+      return this.startGame();
+    }
+    return null;
   }
 }
 
